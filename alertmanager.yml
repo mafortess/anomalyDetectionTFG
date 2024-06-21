@@ -9,7 +9,7 @@ receivers:
    - name: 'notifications'
      webhook_configs:
       - url: "http://localhost:5001/alert"
-      #- url: 'https://api.telegram.org/bot7316001026:AAHJrljbCfPueSmjZ2z52EZJG1Mi67qMc90/sendMessage?chat_id=1588621892&text=Alert_Fired'
+      #- url: 'https://api.telegram.org/token-bot/sendMessage?chat_id=chat_id&text=Alert_Fired'
         send_resolved: true #notificación tanto para el inicio como la resolución de la alerta
 
      discord_configs:
@@ -21,7 +21,7 @@ receivers:
         from: 'alertas.tfg2024@gmail.com'
         smarthost: 'smtp.gmail.com:587'
         auth_username: 'alertas.tfg2024@gmail.com'
-        auth_password: 'lcev nkie fhdp xeni'
+        auth_password: 'app_password'
 
 # - name: 'web.hook'
   #  webhook_configs:
