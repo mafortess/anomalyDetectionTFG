@@ -1,0 +1,43 @@
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 1m
+  repeat_interval: 1h
+  receiver: 'notifications'
+
+receivers:
+   - name: 'notifications'
+     webhook_configs:
+      - url: "http://localhost:5001/alert"
+      #- url: 'https://api.telegram.org/bot7316001026:AAHJrljbCfPueSmjZ2z52EZJG1Mi67qMc90/sendMessage?chat_id=1588621892&text=Alert_Fired'
+        send_resolved: true #notificación tanto para el inicio como la resolución de la alerta
+
+     discord_configs:
+      - webhook_url: 'https://discordapp.com/api/webhooks/1247238289522430075/wfN11U0FJMJ6KDSrqoXwTt63U_lV2pl-QaOu4LoNdJx2jjQlQ74q75AY-j9noSddzNBa'
+        send_resolved: true
+
+     email_configs:
+      - to: 'alertas.tfg2024@gmail.com'
+        from: 'alertas.tfg2024@gmail.com'
+        smarthost: 'smtp.gmail.com:587'
+        auth_username: 'alertas.tfg2024@gmail.com'
+        auth_password: 'lcev nkie fhdp xeni'
+
+# - name: 'web.hook'
+  #  webhook_configs:
+   #   - url: 'http://127.0.0.1:5001/'
+
+
+#   - name: 'default-receiver'
+ #    webhook_configs:
+  #    - url: "http://localhost:5001/alert"
+
+templates:
+   - '/etc/alertmanager/template/telegram.tmpl'
+
+#inhibit_rules:
+ # - source_match:
+  #    severity: 'critical'
+   # target_match:
+    #  severity: 'warning'
+   # equal: ['alertname', 'dev', 'instance']
