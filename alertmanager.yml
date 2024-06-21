@@ -13,7 +13,7 @@ receivers:
         send_resolved: true #notificación tanto para el inicio como la resolución de la alerta
 
      discord_configs:
-      - webhook_url: 'https://discordapp.com/api/webhooks/1247238289522430075/wfN11U0FJMJ6KDSrqoXwTt63U_lV2pl-QaOu4LoNdJx2jjQlQ74q75AY-j9noSddzNBa'
+      - webhook_url: 'https://discordapp.com/api/webhooks/token'
         send_resolved: true
 
      email_configs:
