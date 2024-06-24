@@ -1,6 +1,4 @@
-# anomalyDetectionTFG
-
-## Monitorización de sistemas para la detección de anomalías
+# Monitorización de sistemas para la detección de anomalías
 
 ### Descripción del Proyecto
 
