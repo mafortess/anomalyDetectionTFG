@@ -1,0 +1,12 @@
+ scrape_configs:
+      - job_name: 's1-servers'
+        static_configs:
+        - targets: ['192.168.1.111:9100']
+          labels:
+            engine: 'userver1'
+        - targets: ['192.168.1.112:9100']
+          labels:
+            engine: 'userver2'
+        - targets: ['192.168.1.113:9100']
+          labels:
+            engine: 'userver3'
