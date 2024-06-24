@@ -16,7 +16,7 @@ Este repositorio contiene los archivos esenciales para montar el sistema de moni
 - **scrape_configs/**: Configuraciones adicionales para la recolección de métricas.
 - **docker/**: Archivos `.yml` para el despliegue de contenedores Docker.
 - **simulations/**: Códigos de simulación para el consumo energético y otras pruebas.
-- **scripts/**: Scripts utilizados para el monitoreo y pruebas, incluyendo tshark, iperf3, stress-ng y las tareas cron.
+- **scripts/**: Scripts utilizados para el monitoreo y pruebas, incluyendo nmap, tshark, iperf3, stress-ng y las tareas cron.
 - **telegram_api/**: Scripts para enviar notificaciones al bot de Telegram.
 
 ### Características del Proyecto
@@ -26,6 +26,7 @@ Este repositorio contiene los archivos esenciales para montar el sistema de moni
 3. **Monitorización en Tiempo Real**: Supervisión de hosts, contenedores Docker y Kubernetes, así como dispositivos físicos.
 4. **Inteligencia Artificial**: Implementada con librerías como scikit-learn y modelos como Isolation Forest para detectar anomalías en tiempo real.
 5. **Alertas Automáticas**: AlertManager envía notificaciones a través de APIs a bots de Telegram, Discord y correo electrónico.
+6. **Ciberseguridad**: Integración de herramientas como nmap, tshark y cloudshark para mejorar la seguridad del sistema.
 
 ### Tecnologías Utilizadas
 
@@ -36,23 +37,38 @@ Este repositorio contiene los archivos esenciales para montar el sistema de moni
 - **Django**: Framework web para el desarrollo del backend.
 - **scikit-learn**: Biblioteca de aprendizaje automático para la implementación de modelos de IA.
 - **cAdvisor, node_exporter, windows_exporter**: Exporters para la recolección de métricas de diversos sistemas.
+- **nmap**: Herramienta de escaneo de puertos y redes.
+- **tshark**: Herramienta para capturas de tráfico de red.
+- **cloudshark**: Plataforma para el análisis y visualización de capturas de tráfico de red.
 
 ### Simulaciones Realizadas
 
 1. **Monitorización de Servidores Ubuntu**: Simulación de carga con stress-ng y alertas activadas por diferencias de carga mayores al 20%.
 2. **Monitorización de Docker Engines**: Simulación de carga y alertas por superación de umbrales.
 3. **Detección de Anomalías con IA**: Modelos de Isolation Forest para hosts y contenedores.
-4. **Monitorización de Consumo Energético**: Comparación entre datos simulados y reales con un medidor de tensión ACS712 y una ESP32.
+4. **Monitorización de Consumo Energético**: Generación de valores simulados de consumo energético enviados a un pin para simular un sensor real. Estos datos son monitoreados por Prometheus y visualizados en Grafana.
 
-### Scripts y Configuraciones Adicionales
+### Utilidades Prácticas de las Métricas Simuladas
 
-- **scripts/**: 
-  - **tshark**: Scripts para capturas de tráfico de red.
-  - **iperf3**: Scripts para pruebas de ancho de banda de red.
-  - **stress-ng**: Scripts para generar carga de CPU y RAM.
-  - **cron_jobs**: Configuraciones de tareas programadas para la ejecución automática de scripts.
+#### Pruebas de Software y Algoritmos
 
-- **telegram_api/**: Scripts para enviar notificaciones a un bot de Telegram.
+- **Desarrollo y Prueba de Algoritmos**: Permite desarrollar y probar algoritmos de análisis de datos, detección de anomalías, predicción de consumo, etc., sin necesidad de hardware físico.
+- **Simulación de Escenarios**: Simula diferentes escenarios de consumo para ver cómo se comportan tus algoritmos bajo diversas condiciones.
+
+#### Entrenamiento de Modelos de Machine Learning
+
+- **Datos de Entrenamiento**: Utiliza las métricas simuladas para generar datos de entrenamiento para modelos de machine learning. Esto puede ser útil para desarrollar modelos de predicción de consumo energético, detección de fallos, etc.
+- **Validación y Evaluación**: Valida y evalúa tus modelos con datos simulados antes de implementarlos con datos reales.
+
+#### Evaluación de Impacto de Estrategias de Ahorro Energético
+
+- **Simulación de Políticas**: Prueba diferentes estrategias de ahorro energético y evalúa su impacto en el consumo simulado.
+- **Optimización de Consumo**: Optimiza la configuración y el uso de dispositivos en base a las métricas simuladas para encontrar formas de reducir el consumo energético.
+
+#### Desarrollo de Interfaces y Visualizaciones
+
+- **Dashboard de Monitoreo**: Crea dashboards y visualizaciones para monitorear el consumo energético simulado. Esto te ayuda a diseñar y perfeccionar interfaces de usuario antes de trabajar con datos reales.
+- **Alertas y Notificaciones**: Configura sistemas de alertas y notificaciones basados en umbrales simulados para desarrollar sistemas de gestión de energía.
 
 ### Instalación y Configuración
 
@@ -91,14 +107,6 @@ Para empezar con este proyecto, sigue los siguientes pasos:
 
 Este proyecto está en una fase inicial y sirve como base para futuras ampliaciones y la incorporación de nuevas formas de monitorización y de otros sistemas.
 
-### Contribuciones
-
-Las contribuciones son bienvenidas. Por favor, lee las [normas de contribución](#) para más detalles.
-
-### Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT. Mira el archivo [LICENSE](LICENSE) para más detalles.
-
 ### Contacto
 
-Para cualquier consulta, por favor contacta a [tu nombre o tu email].
+Para cualquier consulta, por favor contacta a mafortes.it@gmail.com
