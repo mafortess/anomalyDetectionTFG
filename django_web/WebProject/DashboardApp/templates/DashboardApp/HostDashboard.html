@@ -1,0 +1,665 @@
+<!-- templates/CoreApp/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Monitorización sistemas{% endblock %}
+
+{% block content %}
+    <h2 class="head_dash">Hosts Monitoring</h2>
+    <hr>
+    <div id="hosts_content">
+        <!-- <div id="host">
+             <div class="head_dashboard" >  
+                <div id="global-status">
+                    <h2>Global status</h2>
+                    <div id="alert-summary">
+                        <span class="alert-critical">2 alertas críticas</span><br>
+                        <span class="alert-warning">1 advertencia</span><br>
+                        <span class="alert-warning">1 advertencia</span><br>
+                        <span class="alert-warning">1 advertencia</span><br>
+                        <span class="alert-warning">1 advertencia</span><br>
+                        <span class="alert-warning">1 advertencia</span><br>
+                    </div>
+                </div>
+            </div> 
+        </div> -->
+        
+        <div id="host">
+            <div class="head_dashboard head_host">
+                <h3>Ubuntu Server 1</h3>
+            <div class="buttons">
+                <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.111','nmap-output1')">Nmap</button> 
+                
+                <!-- DESCARGA LISTA CAPTURAS DE UNA IP CONCRETA -->
+                <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.111','tsh-output1')">Tshark</button>
+
+                <!-- DESCARGA UNA CAPTURA DE UNA IPCONCRETA -->
+                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="getCaptureByIp('192.168.1.121','tsh-output1')">Tshark capt ip concreta</button> -->
+
+                <!-- DESCARGA UNA CAPTURA CONCRETA -->
+                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="downloadTsharkCaptures('fb041f8e9b3e')">Tshark capt concreta</button> -->
+                <hr>
+
+                <!-- VER CAPTURA EN DIV -->
+                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="viewTsharkCaptures('fb041f8e9b3e')">Tshark capt concreta</button> -->
+               
+            </div>
+            <div id="nmap-output1">
+                <!-- Aquí se mostrará la salida del escaneo de puertos -->
+            </div>
+            <div id="tsh-output1">
+                  <!-- Aquí se mostrará la salida de Tshark -->
+            </div>
+            </div>
+            <div class="dashboard_panel" data-job="s1-servers" data-instance="userver1">
+                
+                <div class="dashboard resumen" data-job="s1-servers" data-instance="userver1"> 
+                    <div style="color:aliceblue">
+                        <h5>Metrics summary</h5>
+                        <hr>
+                        <p class="cpu" style="color: aliceblue;">CPU:</p>
+                        <p class="ram">RAM:</p>
+                        <p class="network">Network Traffic:</p>
+                        <p class="disk">Disk:</p>
+                    </div>
+                </div>
+
+                <div class="dashboard" data-instance="userver1">                 
+                    <h5>Alerts and rules</h5>
+                    <hr>
+                    <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver1">
+                        <p class="alerta">Alerta</p>
+                    </div>
+                    <hr> 
+                    <div class="rules"style="color:aliceblue" data-job="s1-servers" data-instance="userver1"> 
+                        <p class="regla"></p>
+                    </div>    
+                </div> 
+                <!-- <div class="sub-dashboard" id="kali-vm"> -->
+                    <div class="dashboard kali-dash"> 
+                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3"  frameborder="0"></iframe>
+                    </div>
+                    <div class="dashboard kali-dash">
+                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
+                    </div>
+                    <div class="dashboard kali-dash">
+                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
+                    </div>
+                    <div class="dashboard kali-dash">
+                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+                    </div>          
+                <!-- </div> -->
+            </div>
+            <button class="min-des" onclick="toggleDashboard('kali-dash')">Minimize/Display</button>
+            
+        </div>
+
+        <div id="host">
+            <div class="head_dashboard head_host">
+                <h3>Ubuntu Server 2</h3>
+                <div class="buttons">
+                    <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.112','nmap-output2')">Nmap</button>
+                    <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.112','tsh-output2')">Tshark</button>
+                   
+                    <!-- <button type="button" class="btn btn-light btn-cyb" onclick="downloadTsharkCaptures('fb041f8e9b3e')">Tshark</button>  -->
+                    <hr>
+                    <div id="nmap-output2">
+                        <!-- Aquí se mostrará la salida del escaneo de puertos -->
+                    </div>
+                    <div id="tsh-output2">
+                          <!-- Aquí se mostrará la salida de Tshark -->
+                    </div>
+                </div>
+            </div> 
+            <div class="dashboard_panel" data-job="s1-servers" data-instance="userver2">
+                <div class="dashboard resumen" data-job="s1-servers" data-instance="userver2"> 
+                    <div style="color:aliceblue">
+                        <h5>Metrics summary</h5>
+                        <hr>
+                        <p class="cpu">CPU:</p>
+                        <p class="ram">RAM:</p>
+                        <p class="network">Network Traffic:</p>
+                        <p class="disk">Disk:</p>
+                    </div>
+                </div>
+                <div class="dashboard" data-instance="userver2">               
+                    <h5>Alerts and rules</h5>
+                    <hr>
+                    <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver2">
+                        <p class="alerta">Alerta</p>
+                    </div>
+                    <hr> 
+                    <div class="rules"style="color:aliceblue" data-job="s1-servers" data-instance="userver2"> 
+                        <p class="regla"></p>
+                    </div>      
+            </div>
+                <div class="dashboard debian-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3" frameborder="0"></iframe>
+                </div>
+                <div class="dashboard debian-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
+                </div>
+                <div class="dashboard debian-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
+                </div>
+                <div class="dashboard debian-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+                </div>
+            </div>
+            <button onclick="toggleDashboard('debian-dash')">Minimize/Display</button>
+           
+        </div>
+        
+        <div id="host">
+             <div class="head_dashboard head_host">
+                <h3>Ubuntu Server 3</h3>
+                <div class="buttons">
+                    <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.113','nmap-output3')">Nmap</button>
+                    <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.113','tsh-output3')">Tshark</button>
+                     <hr>
+                    <div id="nmap-output3">
+                        <!-- Aquí se mostrará la salida del escaneo de puertos -->
+                    </div>
+                    <div id="tsh-output3">
+                          <!-- Aquí se mostrará la salida de Tshark -->
+                    </div>
+                </div>
+            </div> 
+            <div class="dashboard_panel" data-job="s1-servers" data-instance="userver3">
+                <div class="dashboard resumen" style="color:aliceblue" data-job="s1-servers" data-instance="userver3">            
+                        <h5>Metrics summary</h5>
+                        <hr>
+                        <p class="cpu"> CPU:</p>
+                        <p class="ram"> RAM:</p>
+                        <p class="network">Network Traffic:</p>
+                        <p class="disk">Disk:</p>
+                </div>
+                <div class="dashboard alert-rules " data-job="s1-servers" data-instance="userver3">           
+                    <h5>Alerts and rules</h5>
+                    <hr>
+                    <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver3">
+                        <p class="alerta">Alerta</p>
+                    </div>
+                    <hr> 
+                    <div class="rules" style="color:aliceblue" data-job="s1-servers" data-instance="userver3"> 
+                        <p class="regla"></p>
+                    </div>              
+                </div>
+                <div class="dashboard windows-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3" frameborder="0"></iframe>
+                </div>
+                <div class="dashboard windows-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
+                </div>
+                <div class="dashboard windows-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
+                </div>
+                <div class="dashboard windows-dash">
+                    <!-- USANDO EMBEBED -->
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+                </div>
+            </div>  
+            <button onclick="toggleDashboard('windows-dash')">Minimize/Display</button>
+             
+        </div>    
+
+<script>
+    function toggleDashboard(host) {
+        var dashboards = document.getElementsByClassName(host);
+        for (var i = 0; i < dashboards.length; i++) {
+        var dashboard = dashboards[i];
+        if (dashboard.style.display === "none") {
+            dashboard.style.display = "block";
+        } else {
+            dashboard.style.display = "none";
+        }
+    }
+    }
+</script>
+
+<!-- FUNCIONES PARA RECUPERAR MÉTRICAS, REGLAS Y ALERTAS -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dashboards = document.querySelectorAll('.resumen');
+        const alerts = document.querySelectorAll('.alerts');
+        const rules = document.querySelectorAll('.rules');
+
+        
+        
+        function fetchMetrics_ne(dashboard, job, instance) {
+            console.log(`Fetching metrics for instance: ${instance}`);
+            fetch(`/prom/get_metrics_ne?job=${job}&instance=${instance}`) // No olvidar /dashboards/ del path
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(`Metrics data for instance ${instance}:`, data);
+                    dashboard.querySelector('.cpu').innerText = `CPU: ${data.cpu.length > 0 ? parseFloat(data.cpu[0].value[1]).toFixed(3) + '%' : 'No data available'}`;
+                    dashboard.querySelector('.ram').innerText = `RAM: ${data.ram.length ? parseFloat(data.ram[0].value[1]).toFixed(3) + '%' : 'No data available'}`;
+                    dashboard.querySelector('.network').innerText = `Network: ${data.network.length ? parseFloat(data.network[0].value[1]).toFixed(3) + ' bytes/s' : 'No data available'}`;
+                    dashboard.querySelector('.disk').innerText = `Disk: ${data.disk.length ? parseFloat(data.disk[0].value[1]).toFixed(3) + '%' : 'No data available'}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    dashboard.querySelector('.cpu').innerText = 'Error cargando datos';
+                    dashboard.querySelector('.ram').innerText = 'Error cargando datos';
+                    dashboard.querySelector('.network').innerText = 'Error cargando datos';
+                    dashboard.querySelector('.disk').innerText = 'Error cargando datos';
+                });
+                //console.log(dashboard)
+                console.log(`Fetching metrics for host: ${host}`)
+        }
+/*
+        function fetchMetrics_we(dashboard, job, instance) {
+            console.log(`Fetching metricfor instance: ${instance}`);
+            fetch(`/prom/get_metrics_we?job=${job}&instance=${instance}`) // No olvidar /dashboards/ del path
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(`Metrics data for instance ${instance}:`, data);
+                    dashboard.querySelector('.cpu').innerText = `CPU: ${data.cpu.length > 0 ? parseFloat(data.cpu[0].value[1]).toFixed(3) + '%' : 'No data available'}`;
+                    dashboard.querySelector('.ram').innerText = `RAM: ${data.ram.length ? parseFloat(data.ram[0].value[1]).toFixed(3) + '%' : 'No data available'}`;
+                    dashboard.querySelector('.network').innerText = `Network: ${data.network.length ? parseFloat(data.network[0].value[1]).toFixed(3) + ' bytes/s' : 'No data available'}`;
+                    dashboard.querySelector('.disk').innerText = `Disk: ${data.disk.length ? parseFloat(data.disk[0].value[1]).toFixed(3) + '%' : 'No data available'}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    dashboard.querySelector('.cpu').innerText = 'Error cargando datos';
+                    dashboard.querySelector('.ram').innerText = 'Error cargando datos';
+                    dashboard.querySelector('.network').innerText = 'Error cargando datos';
+                    dashboard.querySelector('.disk').innerText = 'Error cargando datos';
+                });
+                //console.log(dashboard)
+                console.log(`Fetching metrics for host: ${host}`)
+        }
+*/
+
+
+        function fetchAlerts(dashboard, job, instance) {
+            fetch(`/prom/get_alerts?job=${job}&instance=${instance}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //console.log(`Alerts data for host ${host}:`, data);
+                    //console.log("Aleta ", data.alerts[0].labels)
+                    dashboard.querySelector('.alerta').innerText = 'No hay alertas';
+                    //if (alerts) {
+                        dashboard.querySelector('.alerta').style.color="green";
+                        if (data.alerts && data.alerts.length > 0) {
+                            data.alerts.forEach(alert => {
+                                if (alert.labels.job == host){
+                                    dashboard.querySelector('.alerta').innerText =`Job: ${alert.labels.job}, Severity: ${alert.labels.severity}, Instance: ${alert.labels.instance}`
+                                    if (alert.labels.severity === 'critical')
+                                        dashboard.querySelector('.alerta').style.color="red";
+                                }
+                            });
+                            //dashboard.querySelector('.alerta').innerText =`Job: ${data.alerts[0].labels.job}, Severity: ${data.alerts[0].labels.severity}`
+                            //dashboard.querySelector('.alerta').innerText = data.alerts[0].labels.job 
+                            //dashboard.querySelector('.alerta').innerText =data.alerts[0].labels.severity;
+                            //dashboard.querySelector('.alerta').innerText = data.alerts.map(alert => `Alerta: ${alert.labels.alertname}, Estado: ${alert.status.state}`).join('\n');
+//                            alertsDiv.innerText = data.alerts.map(alert => `Alerta: ${alert.labels.alertname}, Estado: ${alert.status.state}`).join('\n');
+                        } else {
+                            dashboard.querySelector('.alerta').innerText = 'No hay alertas';
+                        }      // }
+                })
+                .catch(error => {
+                    console.error('Error fetching alerts:', error);
+                    if(alerts) dashboard.querySelector('.alerta').innerText = 'Error cargando alertas';
+                });
+                //console.log(dashboard)               //console.log(alerts)
+                console.log(`Fetching alerts for host: ${host}`) 
+        }
+        
+        function fetchRules(dashboard, job, instance){
+            fetch(`/prom/get_rules?job=${job}&instance=${instance}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+
+                .then(data => {
+                    console.log(`Rules data for host ${host}:`, data);
+                    console.log("Regla ", data.rules[0])
+                            if (data.rules && data.rules.length > 0) {
+                                data.rules.forEach(rule => {
+                                //if (rule.name == host){
+                                    dashboard.querySelector('.regla').innerText =`Name: ${rule.name}\n File: ${rule.file}\n Interval: ${rule.interval}`
+                                  //  if (alert.labels.severity === 'critical')
+                                    //    dashboard.querySelector('.alerta').style.color="red";
+                                //}
+                            });
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}, Archivo: ${rule.file}`).join('\n');
+                                //console.log(data.rules)
+                                //console.log(data)
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}\n Fichero: ${rule.file}`).join('\n');
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}\n Fichero: ${rule.file} , Descripción: ${rule.rules.map(rule => `${rule.name}, ${rule.query}`)}`).join('\n');
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => )
+                            } else {
+                                dashboard.querySelector('.regla').innerText = 'No hay reglas';
+                                //console.log("NO HAY REGLAS")
+                            }
+                
+                })
+                .catch(error => {
+                    console.error('Error fetching rules:', error);
+                    if(rules)  dashboard.querySelector('.rules .regla').innerText = 'Error cargando reglas';
+                });
+                //console.log(dashboard)
+                //console.log(rules)
+                console.log(`Fetching rules for host: ${host}`) 
+        }
+
+        dashboards.forEach(dashboard => {
+            const instance = dashboard.getAttribute('data-instance'); 
+            const job = dashboard.getAttribute('data-job');
+            fetchMetrics_ne(dashboard, job, instance); // Realiza la primera solicitud inmediatamente
+            setInterval(() => fetchMetrics_ne(dashboard, job, instance), 60000); // Actualiza cada minuto               
+        });
+
+/*        dashboards.forEach(dashboard => {
+            const instance = dashboard.getAttribute('data-instance'); 
+            const job = dashboard.getAttribute('data-job');
+            fetchMetrics(dashboard, job, instance); // Realiza la primera solicitud inmediatamente
+            setInterval(() => fetchMetrics_we(dashboard, job, instance), 60000); // Actualiza cada minuto               
+        });
+*/
+        alerts.forEach(dashboard => {
+            const instance = dashboard.getAttribute('data-instance'); 
+            const job = dashboard.getAttribute('data-job');       
+            fetchAlerts(dashboard, job, instance); // Realiza la primera solicitud inmediatamente     
+            setInterval(() => fetchAlerts(dashboard, job, instance), 60000); // Actualiza cada minuto
+        });           
+
+        rules.forEach(dashboard => {
+            const instance = dashboard.getAttribute('data-instance'); 
+            const job = dashboard.getAttribute('data-job'); 
+            fetchRules(dashboard, job, instance); // Realiza la primera solicitud inmediatamente         
+            setInterval(() => fetchRules(dashboard, job, instance), 60000); // Actualiza cada minuto
+    
+        });
+    })
+</script>
+
+<!-- FUNCIÓN LLAMADA POR EL BOTON DE NMAP -->
+<script type="text/javascript">
+    function scanNetwork(hostIp, outputDivId) {
+        $.ajax({
+            url: "{% url 'scan_network' %}",
+            type: "GET",
+            data: {
+                ip: hostIp
+            },
+        success: function(response) {
+            let outputHtml = '';
+               // Añadir la IP escaneada al principio del resultado
+            if (response.ip) {
+                outputHtml += `<h6>Port scan for IP ${response.ip}:</h6> <hr>`;
+            }
+            if (response.output && response.output.length > 0) {
+                outputHtml += '<ul>';
+                response.output.forEach(port => {
+                    outputHtml += `<li>Port: ${port.port}, State: ${port.state}, Service: ${port.service}</li>`;
+                });
+                outputHtml += '</ul>';
+            } else {
+                outputHtml = 'No open ports found.';
+            }
+            $('#' + outputDivId).html(outputHtml);
+            console.log("En ejecución");
+        },
+            error: function(error) {
+                console.error("Nmap Error:", error);
+                $('#' + outputDivId).html('Error ejecutando Nmap');
+            }
+        });
+    }
+</script>
+
+<!-- FUNCIONES LLAMADA POR EL BOTON DE TSHARK -->
+<!-- una captura -->
+<script>
+    function getCaptureByIp(ip, outputDivId) {
+        $.ajax({
+            url: "{% url 'get_capture_by_ip'  %}",
+            type: 'GET',
+            data: {
+                ip: ip
+            },
+            success: function(response) {
+                console.log("RESP", response.capture_id)
+                
+                let outputHtml = '';
+                if (response.capture_id) {
+                    outputHtml = `<h6>Captures for IP ${ip}:</h6> <hr><ul>`;
+            
+                        outputHtml += `<li>${response.capture_id} - <a href="{% url 'download_tshark_capture' %}?id=${response.capture_id}">Download</a></li>`;
+                    outputHtml += '</ul>';
+                    $('#' + outputDivId).html(outputHtml);
+                } else {
+                    $('#' + outputDivId).html(`Error: ${response.error}`);
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                print("OBTENIDO:", response)
+                $('#' + outputDivId).html('Error retrieving captures');
+            }
+        });
+    }
+</script>
+
+<!-- lista de capturas -->
+
+
+<script>
+    //lista de capturas 
+    function getCapturesByIp(ip, outputDivId) {
+        $.ajax({
+            url: "{% url 'get_captures_by_ip'  %}",
+            type: 'GET',
+            data: {
+                ip: ip
+            },
+            success: function(response) {
+                console.log("RESP", response.captures[0].id)
+                
+                let outputHtml = '';
+                if (response.captures) {
+                    outputHtml = `<h6>Captures for IP ${ip}:</h6>`;
+                        outputHtml += `<table class="captures-table">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>End Time</th>
+                                            <th>Filename</th>
+                                            <th>Action</th>
+                                        </tr>`;
+                                        
+                response.captures.slice(0,10).forEach(capture => {
+                        outputHtml += `<tr>
+                                            <td>${capture.id}</td> 
+                                            <td>${capture.start_time}</td>
+                                            <td>${capture.filename}</td>
+                                            <td><a href="{% url 'download_tshark_capture' %}?id=${capture.id}">Download</a></td>
+                                        </tr>`;
+                    });
+                    outputHtml += `</table>`;
+                    $('#' + outputDivId).html(outputHtml);
+                } else {
+                    $('#' + outputDivId).html(`Error: ${response.error}`);
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                print("OBTENIDO:", response)
+                $('#' + outputDivId).html('Error retrieving captures');
+            }
+        });
+    }
+    function getsCapturesByIp(ip, outputDivId) {
+        $.ajax({
+            url: "{% url 'get_captures_by_ip'  %}",
+            type: 'GET',
+            data: {
+                ip: ip
+            },
+            success: function(response) {
+                console.log("RESP", response.capture_ids)
+                
+                let outputHtml = '';
+                if (response.capture_ids) {
+                    outputHtml = `<hr><h6>Captures for IP ${ip}:</h6> <hr><ul>`;
+                    response.capture_ids.forEach(capture_id => {
+                        outputHtml += `<li>${capture_id} - <a href="{% url 'download_tshark_capture' %}?id=${capture_id}">Download</a></li>`;
+                    });
+                    outputHtml += '</ul>';
+                    $('#' + outputDivId).html(outputHtml);
+                } else {
+                    $('#' + outputDivId).html(`Error: ${response.error}`);
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                print("OBTENIDO:", response)
+                $('#' + outputDivId).html('Error retrieving captures');
+            }
+        });
+    }
+</script>
+
+<!-- ============================================================ -->
+
+<!-- DESCARGA UNA CAPTURA CONCRETA -->
+<script>
+    function downloadTsharkCaptures(captureId) {
+        const encodedId = encodeURIComponent(captureId);
+        const url = "/cyber/tshark/?id=" + encodedId;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `capture_${captureId}.pcap`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                document.getElementById('output').innerText = "Download started successfully.";
+            })
+            .catch(error => {
+                document.getElementById('output').innerText = "Error downloading capture: " + error;
+            });
+    }
+</script>
+
+
+<script>
+    function viewTsharkCaptures(hostIp, outputDivId) {
+        $.ajax({
+            url: "{% url 'view_tshark_captures' %}",
+            type: 'GET',
+            data: {
+                ip: hostIp
+            },
+            success: function(response) {
+                let outputHtml = '';
+                if (response.ip) {
+                    outputHtml = `<h6>Últimas capturas de TShark para la IP ${response.ip}:</h6> <hr>`;
+                }
+                if (response.captures && response.captures.length > 0) {
+                    outputHtml += '<ul>';
+                    response.captures.forEach(capture => {
+                        outputHtml += `<li>${capture.info}</li>`;
+                    });
+                    outputHtml += '</ul>';
+                } else {
+                    outputHtml += '<p>No captures found.</p>';
+                }
+                $('#' + outputDivId).html(outputHtml);
+            },
+            error: function(error) {
+                console.error('TShark Error:', error);
+                $('#' + outputDivId).html('Error obteniendo capturas de TShark');
+            }
+        });
+    }
+</script>
+
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        checkPrometheusStatus('192.168.1.100');
+        checkPrometheusStatus('192.168.1.101');
+    });
+
+    function checkPrometheusStatus(host) {
+        const url = `/check_prometheus_status/?host=${host}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.being_scraped) {
+                    document.getElementById(`nmapButton${host.replace(/\./g, '')}`).disabled = true;
+                    document.getElementById(`nmapButton${host.replace(/\./g, '')}`).classList.add('btn-disabled');
+                }
+            })
+            .catch(error => {
+                console.error('Error checking Prometheus status:', error);
+            });
+    }
+} -->
+
+
+    <!-- {%load static %} -->
+    <!-- Usa las versiones de desarrollo de React y ReactDOM desde un CDN -->
+    <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script> -->
+    <!-- <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
+
+    <!-- <script src="{% static 'js/453.785134cd.chunk.js' %}"></script> 
+    <script src="{% static 'js/453.785134cd.chunk.js.map' %}"></script> 
+    <script src="{% static 'js/main.9f97b936.js' %}"></script> 
+    <script src="{% static 'js/main.9f97b936.js.LICENSE.txt' %}"></script> 
+    <script src="{% static 'js/main.9f97b936.js.map' %}"></script>  -->
+    <!-- <a href="{% url 'index' %}" class="btn btn-secondary">Volver a la página de inicio</a> -->
+
+{% endblock %}
+
+<!-- OBTENER LISTA DE ID DE CAPTURAS DE IP CONCRETA -->
+<!-- <script>
+    function getAndDownloadCaptures(ip, outputDivId) {
+        $.ajax({
+            url: `{% url 'get_latest_capture' %}`,
+            type: 'GET',
+            data: {
+                ip: ip
+            },   
+            success: function(response) {
+                if (response.capture_id) {
+                    $('#' + outputDivId).html(`Latest capture ID for IP ${ip}: ${response.capture_id}`);
+                    window.location.href = `{% url 'download_tshark_capture' %}?id=${response.capture_id}`;
+                } else {
+                    $('#' + outputDivId).html(`Error: ${response.error}`);
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                $('#' + outputDivId).html('Error retrieving capture ID');
+            }
+        });
+    }
+</script> -->

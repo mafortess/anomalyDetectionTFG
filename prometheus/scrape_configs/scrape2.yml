@@ -1,0 +1,16 @@
+scrape_configs:
+  - job_name: 's2-containers'
+    static_configs:
+    - targets: ['192.168.1.121:8080']
+      labels:
+        instance: 'docker1'
+        engine: 'docker1'
+    - targets: ['192.168.1.122:8080']
+      labels:
+        instance: 'docker2'
+        engine: 'docker2'
+    - targets: ['192.168.1.123:8080']
+      labels:
+        instance: 'docker3'
+        engine: 'docker3'
+  

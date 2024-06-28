@@ -1,0 +1,54 @@
+groups:
+  - name: alert_rules
+    interval: 1m
+    rules:
+      - alert: HighCPUDifference
+        expr: |
+          abs(
+            1 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", job="s1-servers", instance="userver1"}[5m]))) -
+            (1 - avg by (job) (rate(node_cpu_seconds_total{mode="idle", job="s1-servers", instance="userver2"}[5m])))
+          ) > 0.1 or
+          abs(
+            1 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", job="s1-servers", instance="userver1"}[5m]))) -
+            (1 - avg by (job) (rate(node_cpu_seconds_total{mode="idle", job="s1-servers", instance="userver3"}[5m])))
+          ) > 0.1 or
+          abs(
+            1 - (avg by (job) (rate(node_cpu_seconds_total{mode="idle", job="s1-servers", instance="userver2"}[5m]))) -
+            (1 - avg by (job) (rate(node_cpu_seconds_total{mode="idle", job="s1-servers", instance="userver3"}[5m])))
+          ) > 0.1
+        for: 15s
+        labels:
+          severity: critical
+        annotations:
+          summary: "High CPU usage difference detected"
+          description: "The CPU usage difference between servers is greater than 20% for more than 15 seconds. Instance {{ $labels.instance }} is significantly different."
+
+      - alert: HighRAMDifference
+        expr: |
+          abs(
+            (avg(node_memory_MemAvailable_bytes{instance="userver1", job="s1-servers"}) / avg(node_memory_MemTotal_bytes{instance="userver1", job="s1-servers"})) -
+            (avg(node_memory_MemAvailable_bytes{instance="userver2", job="s1-servers"}) / avg(node_memory_MemTotal_bytes{instance="userver2", job="s1-servers"}))
+          ) > 0.1 or
+          abs(
+            (avg(node_memory_MemAvailable_bytes{instance="userver1", job="s1-servers"}) / avg(node_memory_MemTotal_bytes{instance="userver1", job="s1-servers"})) -
+            (avg(node_memory_MemAvailable_bytes{instance="userver3", job="s1-servers"}) / avg(node_memory_MemTotal_bytes{instance="userver3", job="s1-servers"}))
+          ) > 0.1 or
+          abs(
+            (avg(node_memory_MemAvailable_bytes{instance="userver2", job="s1-servers"}) / avg(node_memory_MemTotal_bytes{instance="userver2", job="s1-servers"})) -
+            (avg(node_memory_MemAvailable_bytes{instance="userver3", job="s1-servers"}) / avg(node_memory_MemTotal_bytes{instance="userver3", job="s1-servers"}))
+          ) > 0.1
+        for: 15s
+        labels:
+          severity: critical
+        annotations:
+          summary: "High RAM usage difference detected"
+          description: "The RAM usage difference between servers is greater than 20% for more than 15 seconds. Instance {{ $labels.instance }} is significantly different."
+
+      - alert: HostDown
+        expr: up{job="s1-servers"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Host {{ $labels.instance }} down"
+          description: "The host {{ $labels.instance }} has been down for more than 1 minute."

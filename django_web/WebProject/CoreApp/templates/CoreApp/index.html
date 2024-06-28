@@ -1,0 +1,40 @@
+<!-- templates/CoreApp/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Mi Sitio Web{% endblock %}
+
+{% block content %}
+    <div id="image">
+      {%load static %}
+      <img src="{% static 'images/main.webp' %}" alt="">
+    </div>
+
+    <p class="p" style="color:aliceblue; margin-top: 20px" >Monitor what you want.</p>
+    <div class="menu">
+      <div class="sub-menu">
+        <button type="button" class="btn btn-success" onclick="navigateTo('/dashboards/host')">Hosts</button>
+      
+        <button type="button" class="btn btn-primary" onclick="location.href='{% url 'ContainerDashboard' %}'">Containers</button>
+         </div>
+      <div class="sub-menu">
+        <!-- <button type="button" class="btn btn-danger" onclick="location.href='{% url 'EnergyPDashboard' %}'">Practical Energy</button> -->
+   
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'EnergyTDashboard' %}'">Energy</button>
+        <!-- <button type="button" class="btn btn-info" onclick="location.href='{% url 'BatchDashboard' %}'">Scripts/Batch jobs</button> -->
+    
+        <button type="button" class="btn btn-light" onclick="location.href='{% url 'AiHostDashboard' %}'">AI Hosts</button>
+        <!-- <button type="button" class="btn btn-danger" onclick="location.href='{% url 'AiContainerDashboard' %}'">AI Containers</button> -->
+        <!-- <button type="button" class="btn btn-dark" onclick="location.href='{% url 'K8sDashboard' %}'">K8s</button> -->
+      </div>
+    </div>
+         <!-- Bootstrap JavaScript and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+ <script>
+    function navigateTo(path) {
+      window.location.href = path;}
+    </script>
+    
+{% endblock %}

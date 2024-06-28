@@ -1,0 +1,73 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname']
+  group_wait: 30s #tiempo que espera antes de enviar la notificación inicial
+  group_interval: 1m #tiempo entre notificaciones para un grupo de alertas
+  repeat_interval: 1h #tiempo entre notificaciones repetidas de una alerta específica
+  receiver: 'default'
+
+  routes:
+    # Ruta para alertas críticas
+    - match:
+        severity: 'critical'
+      receiver: 'all_platforms'
+      continue: true
+
+    # Rutas para alertas de advertencia específicas de métricas
+    - match:
+        severity: 'warning'
+        alertname: 'HighCPUUsage'
+      receiver: 'telegram'
+
+    - match:
+        severity: 'warning'
+        alertname: 'HighMemoryUsage'
+      receiver: 'email'
+
+    - match:
+        severity: 'warning'
+        alertname: 'HighNetworkTraffic'
+      receiver: 'discord'
+
+receivers:
+  - name: 'default'
+    email_configs:
+     - to: 'alertas.tfg2024@gmail.com'
+       from: 'alertas.tfg2024@gmail.com'
+       smarthost: 'smtp.gmail.com:587'
+       auth_username: 'alertas.tfg2024@gmail.com'
+       auth_password: 'authentication password'
+       send_resolved: true
+
+  - name: 'all_platforms'
+    email_configs:
+     - to: 'alertas.tfg2024@gmail.com'
+       from: 'alertas.tfg2024@gmail.com'
+       smarthost: 'smtp.gmail.com:587'
+       auth_username: 'alertas.tfg2024@gmail.com'
+       auth_password: 'authentication password'
+    webhook_configs:
+     - url: "http://localhost:5001/alert"
+       send_resolved: true
+    discord_configs:
+     - webhook_url: 'https://discordapp.com/api/webhooks/id/token'
+       send_resolved: true
+
+  - name: 'telegram'
+    webhook_configs:
+     - url: 'http://localhost:5001/alert'
+
+  - name: 'email'
+    email_configs:
+     - to: 'alertas.tfg2024@gmail.com'
+       from: 'alertas.tfg2024@gmail.com'
+       smarthost: 'smtp.gmail.com:587'
+       auth_username: 'alertas.tfg2024@gmail.com'
+       auth_password: 'authentication password'
+
+  - name: 'discord'
+    discord_configs:
+     - webhook_url: 'https://discordapp.com/api/webhooks/id/token'
+       send_resolved: true

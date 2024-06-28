@@ -1,0 +1,55 @@
+groups:
+- name: system_metrics
+  interval: 30s
+  rules:
+    # Recording rules for system uptime across different hosts
+    - record: instance:uptime:seconds
+      expr: uptime{job=~"debianhost|debiancluster2|windowshost"}
+
+    # Recording CPU usage for different systems
+    - record: instance:cpu_usage:rate
+      expr: rate(process_cpu_seconds_total{job=~"debianhost|debiancluster2|windowshost"}[5m])
+
+- name: cadvisor_metrics
+  interval: 1m
+  rules:
+    # Record the total CPU usage by cadvisor monitored containers
+    - record: cadvisor:container_cpu_usage:total
+      expr: sum(rate(container_cpu_usage_seconds_total{job="cadvisor"}[5m]))
+
+    # Record memory usage for cadvisor monitored containers
+    - record: cadvisor:container_memory_usage
+      expr: container_memory_usage_bytes{job="cadvisor"}
+
+- name: alert_rules
+  interval: 1m
+  rules:
+    # Alert for high CPU usage on any system
+    - alert: HighCpuUsage
+      expr: rate(process_cpu_seconds_total{job=~"debianhost|debiancluster2|windowshost"}[5m]) > 0.9
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "High CPU usage detected on {{ $labels.instance }}"
+        description: "CPU usage is over 90% for more than 5 minutes."
+
+    # Alert for downtime or unreachable hosts
+    - alert: HostDown
+      expr: up{job=~"debianhost|debiancluster2|windowshost|kali"} == 0
+      for: 30s
+      labels:
+        severity: critical
+      annotations:
+        summary: "Host {{ $labels.instance }} down"
+        description: "The host has been down for more than 1 minute."
+
+    # Alert for high memory usage in containers monitored by cadvisor
+    - alert: HighMemoryUsage
+      expr: container_memory_usage_bytes{job="cadvisor"} / container_spec_memory_limit_bytes{job="cadvisor"} > 0.8
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage in container on {{ $labels.instance }}"
+        description: "Container is using more than 80% of its allocated memory limit."

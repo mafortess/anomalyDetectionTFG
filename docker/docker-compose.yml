@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    privileged: true
+    networks:
+      net1:
+        ipv4_address: 192.168.11.11
+    volumes:
+      - /var/log:/var/log
+
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    privileged: true
+    networks:
+      net1:
+        ipv4_address: 192.168.11.12
+    volumes:
+      - /var/log:/var/log
+
+  app3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    privileged: true
+    networks:
+      net1:
+        ipv4_address: 192.168.11.13
+    volumes:
+      - /var/log:/var/log
+
+networks:
+  net1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.11.0/24

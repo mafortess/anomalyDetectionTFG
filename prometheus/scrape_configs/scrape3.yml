@@ -1,0 +1,15 @@
+scrape_configs:
+  - job_name: 's3-servers'
+    static_configs:
+      - targets: ['192.168.1.131:9100']
+        labels:
+          instance: 'userver1'
+          engine: 'userver1'
+      - targets: ['192.168.1.132:9100']
+        labels:
+          instance: 'userver2'
+          engine: 'userver2'
+      - targets: ['192.168.1.133:9100']
+        labels:
+          instance: 'userver3'
+          engine: 'userver3'
