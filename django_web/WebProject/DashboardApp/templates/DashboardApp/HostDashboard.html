@@ -337,16 +337,13 @@
                         });
                     } else {
                         dashboard.querySelector('.regla').innerText = 'No hay reglas';
-                    }
-                
+                    }              
                 })
                 
                 .catch(error => {
                     console.error('Error fetching rules:', error);
                     if(rules)  dashboard.querySelector('.rules .regla').innerText = 'Error cargando reglas';
                 });
-                //console.log(dashboard)
-                //console.log(rules)
                 console.log(`Fetching rules for host: ${host}`) 
         }
 
