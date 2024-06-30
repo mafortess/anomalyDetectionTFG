@@ -137,7 +137,12 @@
                                         dashboard.querySelector('.alerta').style.color="red";
                                 }
                             });
-                         } else {
+                            //dashboard.querySelector('.alerta').innerText =`Job: ${data.alerts[0].labels.job}, Severity: ${data.alerts[0].labels.severity}`
+                            //dashboard.querySelector('.alerta').innerText = data.alerts[0].labels.job 
+                            //dashboard.querySelector('.alerta').innerText =data.alerts[0].labels.severity;
+                            //dashboard.querySelector('.alerta').innerText = data.alerts.map(alert => `Alerta: ${alert.labels.alertname}, Estado: ${alert.status.state}`).join('\n');
+//                            alertsDiv.innerText = data.alerts.map(alert => `Alerta: ${alert.labels.alertname}, Estado: ${alert.status.state}`).join('\n');
+                        } else {
                             dashboard.querySelector('.alerta').innerText = 'No hay alertas';
                         }      // }
                 })
@@ -169,9 +174,15 @@
                                     //    dashboard.querySelector('.alerta').style.color="red";
                                 //}
                             });
-                               } else {
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}, Archivo: ${rule.file}`).join('\n');
+                                //console.log(data.rules)
+                                //console.log(data)
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}\n Fichero: ${rule.file}`).join('\n');
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}\n Fichero: ${rule.file} , Descripción: ${rule.rules.map(rule => `${rule.name}, ${rule.query}`)}`).join('\n');
+                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => )
+                            } else {
                                 dashboard.querySelector('.regla').innerText = 'No hay reglas';
-                        
+                                //console.log("NO HAY REGLAS")
                             }
                 
                 })
@@ -179,7 +190,8 @@
                     console.error('Error fetching rules:', error);
                     if(rules)  dashboard.querySelector('.rules .regla').innerText = 'Error cargando reglas';
                 });
-      
+                //console.log(dashboard)
+                //console.log(rules)
                 console.log(`Fetching rules for host: ${host}`) 
         }
 
@@ -208,5 +220,12 @@
     <!-- Usa las versiones de desarrollo de React y ReactDOM desde un CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- <script src="{% static 'js/453.785134cd.chunk.js' %}"></script> 
+    <script src="{% static 'js/453.785134cd.chunk.js.map' %}"></script> 
+    <script src="{% static 'js/main.9f97b936.js' %}"></script> 
+    <script src="{% static 'js/main.9f97b936.js.LICENSE.txt' %}"></script> 
+    <script src="{% static 'js/main.9f97b936.js.map' %}"></script>  -->
+    <!-- <a href="{% url 'index' %}" class="btn btn-secondary">Volver a la página de inicio</a> -->
 
 {% endblock %}

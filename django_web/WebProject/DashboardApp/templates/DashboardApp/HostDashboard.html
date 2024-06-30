@@ -5,202 +5,184 @@
 
 {% block content %}
     <h2 class="head_dash">Hosts Monitoring</h2>
-    <hr>
-    <div id="hosts_content">
-        <!-- <div id="host">
-             <div class="head_dashboard" >  
-                <div id="global-status">
-                    <h2>Global status</h2>
-                    <div id="alert-summary">
-                        <span class="alert-critical">2 alertas críticas</span><br>
-                        <span class="alert-warning">1 advertencia</span><br>
-                        <span class="alert-warning">1 advertencia</span><br>
-                        <span class="alert-warning">1 advertencia</span><br>
-                        <span class="alert-warning">1 advertencia</span><br>
-                        <span class="alert-warning">1 advertencia</span><br>
-                    </div>
-                </div>
-            </div> 
-        </div> -->
-        
-        <div id="host">
-            <div class="head_dashboard head_host">
-                <h3>Ubuntu Server 1</h3>
-            <div class="buttons">
-                <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.111','nmap-output1')">Nmap</button> 
-                
-                <!-- DESCARGA LISTA CAPTURAS DE UNA IP CONCRETA -->
-                <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.111','tsh-output1')">Tshark</button>
+    <hr>     
+    <div id="host">
+        <div class="head_dashboard head_host">
+            <h3>Ubuntu Server 1</h3>
+        <div class="buttons">
+            <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.111','nmap-output1')">Nmap</button> 
+            
+            <!-- DESCARGA LISTA CAPTURAS DE UNA IP CONCRETA -->
+            <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.111','tsh-output1')">Tshark</button>
 
-                <!-- DESCARGA UNA CAPTURA DE UNA IPCONCRETA -->
-                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="getCaptureByIp('192.168.1.121','tsh-output1')">Tshark capt ip concreta</button> -->
+            <!-- DESCARGA UNA CAPTURA DE UNA IPCONCRETA -->
+            <!-- <button type="button" class="btn btn-light btn-cyb" onclick="getCaptureByIp('192.168.1.121','tsh-output1')">Tshark capt ip concreta</button> -->
 
-                <!-- DESCARGA UNA CAPTURA CONCRETA -->
-                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="downloadTsharkCaptures('fb041f8e9b3e')">Tshark capt concreta</button> -->
-                <hr>
+            <!-- DESCARGA UNA CAPTURA CONCRETA -->
+            <!-- <button type="button" class="btn btn-light btn-cyb" onclick="downloadTsharkCaptures('fb041f8e9b3e')">Tshark capt concreta</button> -->
+            <hr>
 
-                <!-- VER CAPTURA EN DIV -->
-                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="viewTsharkCaptures('fb041f8e9b3e')">Tshark capt concreta</button> -->
-               
-            </div>
-            <div id="nmap-output1">
-                <!-- Aquí se mostrará la salida del escaneo de puertos -->
-            </div>
-            <div id="tsh-output1">
-                  <!-- Aquí se mostrará la salida de Tshark -->
-            </div>
-            </div>
-            <div class="dashboard_panel" data-job="s1-servers" data-instance="userver1">
-                
-                <div class="dashboard resumen" data-job="s1-servers" data-instance="userver1"> 
-                    <div style="color:aliceblue">
-                        <h5>Metrics summary</h5>
-                        <hr>
-                        <p class="cpu" style="color: aliceblue;">CPU:</p>
-                        <p class="ram">RAM:</p>
-                        <p class="network">Network Traffic:</p>
-                        <p class="disk">Disk:</p>
-                    </div>
-                </div>
-
-                <div class="dashboard" data-instance="userver1">                 
-                    <h5>Alerts and rules</h5>
-                    <hr>
-                    <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver1">
-                        <p class="alerta">Alerta</p>
-                    </div>
-                    <hr> 
-                    <div class="rules"style="color:aliceblue" data-job="s1-servers" data-instance="userver1"> 
-                        <p class="regla"></p>
-                    </div>    
-                </div> 
-                <!-- <div class="sub-dashboard" id="kali-vm"> -->
-                    <div class="dashboard kali-dash"> 
-                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3"  frameborder="0"></iframe>
-                    </div>
-                    <div class="dashboard kali-dash">
-                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
-                    </div>
-                    <div class="dashboard kali-dash">
-                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
-                    </div>
-                    <div class="dashboard kali-dash">
-                        <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
-                    </div>          
-                <!-- </div> -->
-            </div>
-            <button class="min-des" onclick="toggleDashboard('kali-dash')">Minimize/Display</button>
+            <!-- VER CAPTURA EN DIV -->
+            <!-- <button type="button" class="btn btn-light btn-cyb" onclick="viewTsharkCaptures('fb041f8e9b3e')">Tshark capt concreta</button> -->
             
         </div>
-
-        <div id="host">
-            <div class="head_dashboard head_host">
-                <h3>Ubuntu Server 2</h3>
-                <div class="buttons">
-                    <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.112','nmap-output2')">Nmap</button>
-                    <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.112','tsh-output2')">Tshark</button>
-                   
-                    <!-- <button type="button" class="btn btn-light btn-cyb" onclick="downloadTsharkCaptures('fb041f8e9b3e')">Tshark</button>  -->
-                    <hr>
-                    <div id="nmap-output2">
-                        <!-- Aquí se mostrará la salida del escaneo de puertos -->
-                    </div>
-                    <div id="tsh-output2">
-                          <!-- Aquí se mostrará la salida de Tshark -->
-                    </div>
-                </div>
-            </div> 
-            <div class="dashboard_panel" data-job="s1-servers" data-instance="userver2">
-                <div class="dashboard resumen" data-job="s1-servers" data-instance="userver2"> 
-                    <div style="color:aliceblue">
-                        <h5>Metrics summary</h5>
-                        <hr>
-                        <p class="cpu">CPU:</p>
-                        <p class="ram">RAM:</p>
-                        <p class="network">Network Traffic:</p>
-                        <p class="disk">Disk:</p>
-                    </div>
-                </div>
-                <div class="dashboard" data-instance="userver2">               
-                    <h5>Alerts and rules</h5>
-                    <hr>
-                    <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver2">
-                        <p class="alerta">Alerta</p>
-                    </div>
-                    <hr> 
-                    <div class="rules"style="color:aliceblue" data-job="s1-servers" data-instance="userver2"> 
-                        <p class="regla"></p>
-                    </div>      
-            </div>
-                <div class="dashboard debian-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3" frameborder="0"></iframe>
-                </div>
-                <div class="dashboard debian-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
-                </div>
-                <div class="dashboard debian-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
-                </div>
-                <div class="dashboard debian-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
-                </div>
-            </div>
-            <button onclick="toggleDashboard('debian-dash')">Minimize/Display</button>
-           
+        <div id="nmap-output1">
+            <!-- Aquí se mostrará la salida del escaneo de puertos -->
         </div>
-        
-        <div id="host">
-             <div class="head_dashboard head_host">
-                <h3>Ubuntu Server 3</h3>
-                <div class="buttons">
-                    <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.113','nmap-output3')">Nmap</button>
-                    <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.113','tsh-output3')">Tshark</button>
-                     <hr>
-                    <div id="nmap-output3">
-                        <!-- Aquí se mostrará la salida del escaneo de puertos -->
-                    </div>
-                    <div id="tsh-output3">
-                          <!-- Aquí se mostrará la salida de Tshark -->
-                    </div>
-                </div>
-            </div> 
-            <div class="dashboard_panel" data-job="s1-servers" data-instance="userver3">
-                <div class="dashboard resumen" style="color:aliceblue" data-job="s1-servers" data-instance="userver3">            
-                        <h5>Metrics summary</h5>
-                        <hr>
-                        <p class="cpu"> CPU:</p>
-                        <p class="ram"> RAM:</p>
-                        <p class="network">Network Traffic:</p>
-                        <p class="disk">Disk:</p>
-                </div>
-                <div class="dashboard alert-rules " data-job="s1-servers" data-instance="userver3">           
-                    <h5>Alerts and rules</h5>
+        <div id="tsh-output1">
+                <!-- Aquí se mostrará la salida de Tshark -->
+        </div>
+        </div>
+        <div class="dashboard_panel" data-job="s1-servers" data-instance="userver1">
+            
+            <div class="dashboard resumen" data-job="s1-servers" data-instance="userver1"> 
+                <div style="color:aliceblue">
+                    <h5>Metrics summary</h5>
                     <hr>
-                    <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver3">
-                        <p class="alerta">Alerta</p>
-                    </div>
-                    <hr> 
-                    <div class="rules" style="color:aliceblue" data-job="s1-servers" data-instance="userver3"> 
-                        <p class="regla"></p>
-                    </div>              
+                    <p class="cpu" style="color: aliceblue;">CPU:</p>
+                    <p class="ram">RAM:</p>
+                    <p class="network">Network Traffic:</p>
+                    <p class="disk">Disk:</p>
                 </div>
-                <div class="dashboard windows-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3" frameborder="0"></iframe>
+            </div>
+
+            <div class="dashboard" data-instance="userver1">                 
+                <h5>Alerts and rules</h5>
+                <hr>
+                <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver1">
+                    <p class="alerta"></p>
                 </div>
-                <div class="dashboard windows-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
+                <hr> 
+                <div class="rules"style="color:aliceblue" data-job="s1-servers" data-instance="userver1"> 
+                    <div class="regla"></div>
+                </div>    
+            </div> 
+            <!-- <div class="sub-dashboard" id="kali-vm"> -->
+                <div class="dashboard kali-dash"> 
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3"  frameborder="0"></iframe>
                 </div>
-                <div class="dashboard windows-dash">
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
+                <div class="dashboard kali-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
                 </div>
-                <div class="dashboard windows-dash">
-                    <!-- USANDO EMBEBED -->
-                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+                <div class="dashboard kali-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
                 </div>
-            </div>  
-            <button onclick="toggleDashboard('windows-dash')">Minimize/Display</button>
-             
-        </div>    
+                <div class="dashboard kali-dash">
+                    <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver1&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+                </div>          
+            <!-- </div> -->
+        </div>
+        <button class="min-des" onclick="toggleDashboard('kali-dash')">Minimize/Display</button>
+        
+    </div>
+
+    <div id="host">
+        <div class="head_dashboard head_host">
+            <h3>Ubuntu Server 2</h3>
+            <div class="buttons">
+                <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.112','nmap-output2')">Nmap</button>
+                <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.112','tsh-output2')">Tshark</button>
+                
+                <!-- <button type="button" class="btn btn-light btn-cyb" onclick="downloadTsharkCaptures('fb041f8e9b3e')">Tshark</button>  -->
+                <hr>
+                <div id="nmap-output2">
+                    <!-- Aquí se mostrará la salida del escaneo de puertos -->
+                </div>
+                <div id="tsh-output2">
+                        <!-- Aquí se mostrará la salida de Tshark -->
+                </div>
+            </div>
+        </div> 
+        <div class="dashboard_panel" data-job="s1-servers" data-instance="userver2">
+            <div class="dashboard resumen" data-job="s1-servers" data-instance="userver2"> 
+                <div style="color:aliceblue">
+                    <h5>Metrics summary</h5>
+                    <hr>
+                    <p class="cpu">CPU:</p>
+                    <p class="ram">RAM:</p>
+                    <p class="network">Network Traffic:</p>
+                    <p class="disk">Disk:</p>
+                </div>
+            </div>
+            <div class="dashboard" data-instance="userver2">               
+                <h5>Alerts and rules</h5>
+                <hr>
+                <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver2">
+                    <p class="alerta"></p>
+                </div>
+                <hr> 
+                <div class="rules"style="color:aliceblue" data-job="s1-servers" data-instance="userver2"> 
+                    <p class="regla"></p>
+                </div>      
+        </div>
+            <div class="dashboard debian-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3" frameborder="0"></iframe>
+            </div>
+            <div class="dashboard debian-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
+            </div>
+            <div class="dashboard debian-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
+            </div>
+            <div class="dashboard debian-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver2&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+            </div>
+        </div>
+        <button onclick="toggleDashboard('debian-dash')">Minimize/Display</button>
+        
+    </div>
+    
+    <div id="host">
+            <div class="head_dashboard head_host">
+            <h3>Ubuntu Server 3</h3>
+            <div class="buttons">
+                <button type="button" class="btn btn-light btn-cyb" onclick="scanNetwork('192.168.1.113','nmap-output3')">Nmap</button>
+                <button type="button" class="btn btn-light btn-cyb" onclick="getCapturesByIp('192.168.1.113','tsh-output3')">Tshark</button>
+                    <hr>
+                <div id="nmap-output3">
+                    <!-- Aquí se mostrará la salida del escaneo de puertos -->
+                </div>
+                <div id="tsh-output3">
+                        <!-- Aquí se mostrará la salida de Tshark -->
+                </div>
+            </div>
+        </div> 
+        <div class="dashboard_panel" data-job="s1-servers" data-instance="userver3">
+            <div class="dashboard resumen" style="color:aliceblue" data-job="s1-servers" data-instance="userver3">            
+                    <h5>Metrics summary</h5>
+                    <hr>
+                    <p class="cpu"> CPU:</p>
+                    <p class="ram"> RAM:</p>
+                    <p class="network">Network Traffic:</p>
+                    <p class="disk">Disk:</p>
+            </div>
+            <div class="dashboard alert-rules " data-job="s1-servers" data-instance="userver3">           
+                <h5>Alerts and rules</h5>
+                <hr>
+                <div class="alerts"style="color:aliceblue" data-job="s1-servers" data-instance="userver3">
+                    <p class="alerta"></p>
+                </div>
+                <hr> 
+                <div class="rules" style="color:aliceblue" data-job="s1-servers" data-instance="userver3"> 
+                    <p class="regla"></p>
+                </div>              
+            </div>
+            <div class="dashboard windows-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=3" frameborder="0"></iframe>
+            </div>
+            <div class="dashboard windows-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=24" frameborder="0"></iframe>
+            </div>
+            <div class="dashboard windows-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=84" frameborder="0"></iframe>
+            </div>
+            <div class="dashboard windows-dash">
+                <iframe src="http://192.168.1.138:3000/d-solo/rYdddlPWk/node-exporter-full-1?orgId=1&refresh=1m&var-datasource=fdmhghvntne2oe&var-job=s1-servers&var-node=userver3&var-diskdevices=%5Ba-z%5D%2B%7Cnvme%5B0-9%5D%2Bn%5B0-9%5D%2B%7Cmmcblk%5B0-9%5D%2B&from=now-1h&to=now&panelId=42" frameborder="0"></iframe>
+            </div>
+        </div>  
+        <button onclick="toggleDashboard('windows-dash')">Minimize/Display</button>
+            
+    </div>    
 
 <script>
     function toggleDashboard(host) {
@@ -248,8 +230,8 @@
                     dashboard.querySelector('.network').innerText = 'Error cargando datos';
                     dashboard.querySelector('.disk').innerText = 'Error cargando datos';
                 });
-                //console.log(dashboard)
-                console.log(`Fetching metrics for host: ${host}`)
+                
+                //console.log(`Fetching metrics for host: ${host}`)
         }
 /*
         function fetchMetrics_we(dashboard, job, instance) {
@@ -290,27 +272,21 @@
                     return response.json();
                 })
                 .then(data => {
-                    //console.log(`Alerts data for host ${host}:`, data);
-                    //console.log("Aleta ", data.alerts[0].labels)
-                    dashboard.querySelector('.alerta').innerText = 'No hay alertas';
-                    //if (alerts) {
-                        dashboard.querySelector('.alerta').style.color="green";
+                    console.log(`Alerts data ${instance}:`, data);   
+                    dashboard.querySelector('.alerta').innerText = '';      
                         if (data.alerts && data.alerts.length > 0) {
                             data.alerts.forEach(alert => {
-                                if (alert.labels.job == host){
-                                    dashboard.querySelector('.alerta').innerText =`Job: ${alert.labels.job}, Severity: ${alert.labels.severity}, Instance: ${alert.labels.instance}`
-                                    if (alert.labels.severity === 'critical')
-                                        dashboard.querySelector('.alerta').style.color="red";
-                                }
+                                //dashboard.querySelector('.alerta').innerText =`Job: ${alert.labels.job}, Severity: ${alert.labels.severity}, Instance: ${alert.labels.instance}`
+                                dashboard.querySelector('.alerta').innerText +=`${alert.annotations.summary}, Severity: ${alert.labels.severity},\n`
+                                if (alert.labels.severity === 'critical')
+                                    dashboard.querySelector('.alerta').style.color="red";
+                                
                             });
-                            //dashboard.querySelector('.alerta').innerText =`Job: ${data.alerts[0].labels.job}, Severity: ${data.alerts[0].labels.severity}`
-                            //dashboard.querySelector('.alerta').innerText = data.alerts[0].labels.job 
-                            //dashboard.querySelector('.alerta').innerText =data.alerts[0].labels.severity;
-                            //dashboard.querySelector('.alerta').innerText = data.alerts.map(alert => `Alerta: ${alert.labels.alertname}, Estado: ${alert.status.state}`).join('\n');
-//                            alertsDiv.innerText = data.alerts.map(alert => `Alerta: ${alert.labels.alertname}, Estado: ${alert.status.state}`).join('\n');
                         } else {
                             dashboard.querySelector('.alerta').innerText = 'No hay alertas';
-                        }      // }
+                            dashboard.querySelector('.alerta').style.color="green";
+                        
+                        }      
                 })
                 .catch(error => {
                     console.error('Error fetching alerts:', error);
@@ -330,28 +306,41 @@
                 })
 
                 .then(data => {
-                    console.log(`Rules data for host ${host}:`, data);
-                    console.log("Regla ", data.rules[0])
-                            if (data.rules && data.rules.length > 0) {
-                                data.rules.forEach(rule => {
-                                //if (rule.name == host){
-                                    dashboard.querySelector('.regla').innerText =`Name: ${rule.name}\n File: ${rule.file}\n Interval: ${rule.interval}`
-                                  //  if (alert.labels.severity === 'critical')
-                                    //    dashboard.querySelector('.alerta').style.color="red";
-                                //}
-                            });
-                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}, Archivo: ${rule.file}`).join('\n');
-                                //console.log(data.rules)
-                                //console.log(data)
-                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}\n Fichero: ${rule.file}`).join('\n');
-                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => `Regla: ${rule.name}\n Fichero: ${rule.file} , Descripción: ${rule.rules.map(rule => `${rule.name}, ${rule.query}`)}`).join('\n');
-                                //dashboard.querySelector('.regla').innerText = data.rules.map(rule => )
-                            } else {
-                                dashboard.querySelector('.regla').innerText = 'No hay reglas';
-                                //console.log("NO HAY REGLAS")
+                    dashboard.querySelector('.regla').innerText = '';
+
+                    if (data.rules && data.rules.length > 0) {
+                        data.rules.forEach(group => {
+                            group.rules.forEach(rule => {
+
+                            // Crear un nuevo elemento para cada regla
+                            const ruleElement = document.createElement('div');
+                            ruleElement.classList.add('rule-item');
+
+                            // Construir el contenido de la regla
+                            let ruleText = `Name: ${rule.name}<br>State: ${rule.state}<br>Severity: ${rule.labels.severity}`;
+                            
+                            // Estilizar según la severidad de la alerta
+                            if (rule.state === 'firing') {
+                                ruleElement.style.color = 'red';
                             }
+
+                            // Asignar el contenido al elemento
+                            ruleElement.innerHTML = ruleText;
+
+                            // Añadir el elemento al contenedor
+                            dashboard.querySelector('.regla').appendChild(ruleElement);
+
+                            // Añadir <hr> entre reglas
+                            const hr = document.createElement('hr');
+                            dashboard.querySelector('.regla').appendChild(hr);
+                            });
+                        });
+                    } else {
+                        dashboard.querySelector('.regla').innerText = 'No hay reglas';
+                    }
                 
                 })
+                
                 .catch(error => {
                     console.error('Error fetching rules:', error);
                     if(rules)  dashboard.querySelector('.rules .regla').innerText = 'Error cargando reglas';
@@ -368,13 +357,6 @@
             setInterval(() => fetchMetrics_ne(dashboard, job, instance), 60000); // Actualiza cada minuto               
         });
 
-/*        dashboards.forEach(dashboard => {
-            const instance = dashboard.getAttribute('data-instance'); 
-            const job = dashboard.getAttribute('data-job');
-            fetchMetrics(dashboard, job, instance); // Realiza la primera solicitud inmediatamente
-            setInterval(() => fetchMetrics_we(dashboard, job, instance), 60000); // Actualiza cada minuto               
-        });
-*/
         alerts.forEach(dashboard => {
             const instance = dashboard.getAttribute('data-instance'); 
             const job = dashboard.getAttribute('data-job');       
@@ -458,12 +440,8 @@
             }
         });
     }
-</script>
 
 <!-- lista de capturas -->
-
-
-<script>
     //lista de capturas 
     function getCapturesByIp(ip, outputDivId) {
         $.ajax({
@@ -601,65 +579,4 @@
     }
 </script>
 
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        checkPrometheusStatus('192.168.1.100');
-        checkPrometheusStatus('192.168.1.101');
-    });
-
-    function checkPrometheusStatus(host) {
-        const url = `/check_prometheus_status/?host=${host}`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.being_scraped) {
-                    document.getElementById(`nmapButton${host.replace(/\./g, '')}`).disabled = true;
-                    document.getElementById(`nmapButton${host.replace(/\./g, '')}`).classList.add('btn-disabled');
-                }
-            })
-            .catch(error => {
-                console.error('Error checking Prometheus status:', error);
-            });
-    }
-} -->
-
-
-    <!-- {%load static %} -->
-    <!-- Usa las versiones de desarrollo de React y ReactDOM desde un CDN -->
-    <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script> -->
-    <!-- <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
-
-    <!-- <script src="{% static 'js/453.785134cd.chunk.js' %}"></script> 
-    <script src="{% static 'js/453.785134cd.chunk.js.map' %}"></script> 
-    <script src="{% static 'js/main.9f97b936.js' %}"></script> 
-    <script src="{% static 'js/main.9f97b936.js.LICENSE.txt' %}"></script> 
-    <script src="{% static 'js/main.9f97b936.js.map' %}"></script>  -->
-    <!-- <a href="{% url 'index' %}" class="btn btn-secondary">Volver a la página de inicio</a> -->
-
 {% endblock %}
-
-<!-- OBTENER LISTA DE ID DE CAPTURAS DE IP CONCRETA -->
-<!-- <script>
-    function getAndDownloadCaptures(ip, outputDivId) {
-        $.ajax({
-            url: `{% url 'get_latest_capture' %}`,
-            type: 'GET',
-            data: {
-                ip: ip
-            },   
-            success: function(response) {
-                if (response.capture_id) {
-                    $('#' + outputDivId).html(`Latest capture ID for IP ${ip}: ${response.capture_id}`);
-                    window.location.href = `{% url 'download_tshark_capture' %}?id=${response.capture_id}`;
-                } else {
-                    $('#' + outputDivId).html(`Error: ${response.error}`);
-                }
-            },
-            error: function(error) {
-                console.error('Error:', error);
-                $('#' + outputDivId).html('Error retrieving capture ID');
-            }
-        });
-    }
-</script> -->

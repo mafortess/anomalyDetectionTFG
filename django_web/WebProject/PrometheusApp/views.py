@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 import requests
-
+import os
+import re
 PROMETHEUS_URL = 'http://192.168.1.138:9090/api/v1/query'
 
 def query_prometheus(query):
@@ -56,22 +57,18 @@ def get_metrics_ne(request):
 #Para obtener las métricas de contenedores scrapeados por cAdvisor
 @require_GET
 def get_metrics_ca(request):
-    job = request.GET.get('job')
-    instance = request.GET.get('instance')
+    name = request.GET.get('name')
+    #print("name metrics: ", name)
 
-    if not instance:
-        return JsonResponse({'error': 'Invalid instance'}, status=400)
+    if not name:
+        return JsonResponse({'error': 'Invalid name'}, status=400)
 
-    if not job:
-        return JsonResponse({'error': 'Invalid job'}, status=400)
-
-    if instance == 'windowshost':
-     #    sum(rate(container_cpu_usage_seconds_total{instance=~"$host",name=~"$container",name=~".+"}[5m])) by (name) *100
-        metrics = {
-        'cpu': 'sum(rate(container_cpu_usage_seconds_total{{name=~".*{}.*", instance="{instance}"}}[5m]))',
-        'ram': 'sum(container_memory_usage_bytes{{name=~".*{}.*", instance="{instance}"}})',
-        'network': 'sum(rate(container_network_receive_bytes_total{{name=~".*{}.*", instance="{instance}"}}[5m]))',
-        'disk': 'sum(container_fs_usage_bytes{{name=~".*{}.*", instance="{instance}"}})'
+    metrics = {
+        'cpu': f'sum(rate(container_cpu_usage_seconds_total{{name=~".*{name}.*"}}[5m])) by (name) * 100',
+        'ram': f'(sum(container_memory_usage_bytes{{name=~".*{name}.*"}}) by (name) / sum(container_spec_memory_limit_bytes{{name=~".*{name}.*"}}) by (name) ) * 100',
+        #'ram': f'sum(container_memory_usage_bytes{{name=~".*{name}.*"}})', Uso de RAM en Bytes
+        'network': f'(sum(rate(container_network_receive_bytes_total{{name=~".*{name}.*"}}[5m])) by (name) + sum(rate(container_network_transmit_bytes_total{{name=~".*{name}.*"}}[5m])) by (name)) / 1024',
+        'disk': f'sum(container_fs_usage_bytes{{name=~".*{name}.*"}} /(1024*1024)) by (name) * 100'
     }
 
     results = {}
@@ -86,7 +83,7 @@ def get_metrics_ca(request):
         else:
             results[key] = None
 
-    #print("Metrics fetched:", results)  # Mensaje de depuración
+    #print("Metrics fetched:", results)  # depuración
     return JsonResponse(results)
 
 
@@ -147,7 +144,7 @@ def get_metrics_energy(request):
     for key, query in metrics.items():
         results[key] = query_prometheus(query)
        
-    print(results)
+    #print(results)
     return JsonResponse(results)
 
 PROMETHEUS_ALERTS_URL = 'http://192.168.1.138:9090/api/v1/alerts'
@@ -164,12 +161,16 @@ def get_alerts(request):
         return JsonResponse({'error': 'Invalid job'}, status=400)
 
     response = requests.get(PROMETHEUS_ALERTS_URL)
-    alerts = []
-    host_alerts = []
+    filtered_alerts = []
     if response.status_code == 200:
         alerts = response.json().get('data', {}).get('alerts', [])
-        host_alerts = [alert for alert in alerts if instance in alert['labels'].get('instance')==instance]
-        return JsonResponse({'alerts': alerts})
+        # Filtrar las alertas para el job y la instancia específicos
+        filtered_alerts = [alert for alert in alerts if 
+                       alert.get('state') == 'firing' and
+                       ('instance' in alert['labels'] and alert['labels']['instance'] == instance) or
+                       ('job' in alert['labels'] and alert['labels']['job'] == job)]
+        #print("Filtered alerts: ", filtered_alerts)
+        return JsonResponse({'alerts': filtered_alerts})
     else:
         return JsonResponse({'error': 'Failed to fetch alerts'}, status=500)
 
@@ -180,7 +181,7 @@ PROMETHEUS_RULES_URL = 'http://192.168.1.138:9090/api/v1/rules'
 def get_rules(request):
     job = request.GET.get('job')
     instance = request.GET.get('instance')
-
+    #print("Instancia de reglas:", instance)
     if not instance:
         return JsonResponse({'error': 'Invalid instance'}, status=400)
 
@@ -188,7 +189,100 @@ def get_rules(request):
         return JsonResponse({'error': 'Invalid job'}, status=400)
 
     response = requests.get(PROMETHEUS_RULES_URL)
+
     if response.status_code == 200:
-        return JsonResponse({'rules': rules})
+        rules = response.json().get('data', {}).get('groups', [])
+        #print("Rules fetched:", rules) #Para depuración
+
+        # Filtrar las reglas para la instancia específica
+        filtered_rules = []
+        for group in rules:
+            filtered_group = {'name': group['name'], 'interval': group['interval'], 'rules': []}
+            
+            rules_list = group.get('rules', [])
+            if not isinstance(rules_list, list):
+                #print("Rules is not a list:", rules_list)
+                continue
+
+            for rule in rules_list:
+                #print("Full Rule:", rule)  # Imprimir toda la regla para depuración
+                query = rule.get('query', None)
+                #print("query:", query)  # Para depuración
+                if query and (f'instance="{instance}"' in query or f'job="{job}"' in query):
+                    #print(f"Adding rule with query: {query}")  # Para depuración
+                    filtered_group['rules'].append(rule)
+            if filtered_group['rules']:
+                filtered_rules.append(filtered_group)
+
+        #print("Rules filtered:", filtered_rules) #Para depuración
+        return JsonResponse({'rules': filtered_rules})
+    else:
+        return JsonResponse({'error': 'Failed to fetch rules'}, status=500)
+
+PROMETHEUS_ALERTS_URL = 'http://192.168.1.138:9090/api/v1/alerts'
+
+@require_GET
+def get_container_alerts(request):
+    container_name = request.GET.get('name')
+    #print(container_name)
+
+    response = requests.get(PROMETHEUS_ALERTS_URL)
+    if not container_name:
+        return JsonResponse({'error': 'Invalid container'}, status=400)
+
+    response = requests.get(PROMETHEUS_ALERTS_URL)
+    if response.status_code == 200:
+        alerts = response.json().get('data', {}).get('alerts', [])
+        #print(alerts)
+        # Filtrar las alertas para el contenedor específico
+        filtered_alerts = []
+        for alert in alerts:
+            #print(f"Processing alert: {alert}")  # Depuración
+            if alert.get('state') == 'firing':
+                description = alert.get('annotations', {}).get('description', '')
+                #print(f"Checking description: {description}")  # Depuración
+                if re.search(f'docker[12]-{container_name}-1', description):
+                    #print(f"Matched alert: {alert}")  # Depuración: Mostrar alertas que coinciden
+                    filtered_alerts.append(alert)
+
+        #print("Filtered alerts:", filtered_alerts)  # Para depuración
+        return JsonResponse({'alerts': filtered_alerts})
+    else:
+        return JsonResponse({'error': 'Failed to fetch alerts'}, status=500)
+
+@require_GET
+def get_container_rules(request):
+    container_name = request.GET.get('name')
+    #print(container_name)
+    if not container_name:
+        return JsonResponse({'error': 'Invalid container'}, status=400)
+
+    response = requests.get(PROMETHEUS_RULES_URL)
+    if response.status_code == 200:
+        rules = response.json().get('data', {}).get('groups', [])
+        #print(rules)
+        filtered_rules = []
+        for group in rules:
+            filtered_group = {'name': group['name'], 'interval': group['interval'], 'rules': []}
+            rules_list = group.get('rules', [])
+            #print(f"Processing group: {group['name']} with rules: {rules_list}")  # Depuración
+            if not isinstance(rules_list, list):
+                print("Rules is not a list:", rules_list)
+                continue
+
+            for rule in rules_list:
+                query = rule.get('query', None)
+                #print(f"Processing rule: {rule}")  # Depuración
+                if query:
+                    print(f"Checking expression: {query}")  # Depuración
+        
+                if f'docker1-{container_name}-1' in query or f'docker2-{container_name}-1' in query:
+                        print(f"Matched rule: {rule}")  
+                        filtered_group['rules'].append(rule)
+            if filtered_group['rules']:
+                filtered_rules.append(filtered_group)
+
+        #print("Filtered rules:", filtered_rules)  # depuración
+        return JsonResponse({'rules': filtered_rules})
     else:
         return JsonResponse({'error': 'Failed to fetch rules'}, status=500)

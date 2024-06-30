@@ -36,9 +36,9 @@
             </div>
         </div>
     
-        <div class="dashboard_panel" data-host="kali">
+        <div class="dashboard_panel" data-container="app1">
             
-            <div class="dashboard resumen" data-host="kali"> 
+            <div class="dashboard resumen" data-container="app1"> 
                 <div style="color:aliceblue">
                     <h5>Metrics summary</h5>
                     <hr>
@@ -49,14 +49,14 @@
                 </div>
             </div>
 
-            <div class="dashboard" data-host="kali">                 
+            <div class="dashboard" data-container="app1">                 
                 <h5>Alerts and rules</h5>
                 <hr>
-                <div class="alerts"style="color:aliceblue"data-host="kali">
+                <div class="alerts"style="color:aliceblue"data-container="app1">
                     <p class="alerta">Alerta</p>
                 </div>
                 <hr> 
-                <div class="rules"style="color:aliceblue"data-host="kali"> 
+                <div class="rules"style="color:aliceblue"data-container="app1"> 
                     <p class="regla"></p>
                 </div>    
             </div> 
@@ -107,8 +107,8 @@
                 </div>
             </div>
         </div> 
-        <div class="dashboard_panel" data-host="debianhost">
-            <div class="dashboard resumen" data-host="debianhost"> 
+        <div class="dashboard_panel" data-container="app2">
+            <div class="dashboard resumen" data-container="app2"> 
                 <div style="color:aliceblue">
                     <h5>Metrics summary</h5>
                     <hr>
@@ -118,14 +118,14 @@
                     <p class="disk">Disk:</p>
                 </div>
             </div>
-            <div class="dashboard" data-host="debianhost">               
+            <div class="dashboard" data-container="app2">               
                 <h5>Alerts and rules</h5>
                 <hr>
-                <div class="alerts"style="color:aliceblue"data-host="debianhost">
+                <div class="alerts"style="color:aliceblue"data-container="app2">
                     <p class="alerta">Alerta</p>
                 </div>
                 <hr> 
-                <div class="rules"style="color:aliceblue"data-host="debianhost"> 
+                <div class="rules"style="color:aliceblue"data-container="app2"> 
                     <p class="regla"></p>
                 </div>      
         </div>
@@ -176,8 +176,8 @@
             </div>
         
         </div> 
-        <div class="dashboard_panel" data-host="windowshost">
-            <div class="dashboard resumen" style="color:aliceblue" data-host="windowshost">            
+        <div class="dashboard_panel" data-container="app3">
+            <div class="dashboard resumen" style="color:aliceblue" data-container="app3">            
                     <h5>Metrics summary</h5>
                     <hr>
                     <p class="cpu"> CPU:</p>
@@ -185,14 +185,14 @@
                     <p class="network">Network Traffic:</p>
                     <p class="disk">Disk:</p>
             </div>
-            <div class="dashboard alert-rules " data-host="windowshost">           
+            <div class="dashboard alert-rules " data-container="app3">           
                 <h5>Alerts and rules</h5>
                 <hr>
-                <div class="alerts"style="color:aliceblue"data-host="windowshost">
+                <div class="alerts"style="color:aliceblue"data-container="app3">
                     <p class="alerta">Alerta</p>
                 </div>
                 <hr> 
-                <div class="rules" style="color:aliceblue"data-host="windowshost"> 
+                <div class="rules" style="color:aliceblue"data-container="app3"> 
                     <p class="regla"></p>
                 </div>              
             </div>
@@ -235,9 +235,9 @@
         const alerts = document.querySelectorAll('.alerts');
         const rules = document.querySelectorAll('.rules');
 
-        function fetchMetrics(dashboard, host) {
-            console.log(`Fetching metrics for host: ${host}`);
-            fetch(`/prom/get_metrics_ca?host=${host}`)
+        function fetchMetrics(dashboard, name) {
+            console.log(`Fetching metrics for container: ${name}`);
+            fetch(`/prom/get_metrics_ca?name=${name}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -245,26 +245,71 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log(`Metrics data for host ${host}:`, data);
-                    dashboard.querySelector('.cpu').innerText = `CPU: ${data.cpu ? parseFloat(data.cpu).toFixed(3) + '%' : 'No data available'}`;
-                    dashboard.querySelector('.ram').innerText = `RAM: ${data.ram ? parseFloat(data.ram).toFixed(3) + '%' : 'No data available'}`;
-                    dashboard.querySelector('.network').innerText = `Network: ${data.network ? parseFloat(data.network).toFixed(3) + ' bytes/s' : 'No data available'}`;
-                    dashboard.querySelector('.disk').innerText = `Disk: ${data.disk ? parseFloat(data.disk).toFixed(3) + '%' : 'No data available'}`;
+                    console.log(`Metrics data for container ${name}:`, data);
+
+                 // Organizar los datos en un formato más accesible
+                    const metrics = {
+                        cpu: {},
+                        ram: {},
+                        network: {},
+                        disk: {}
+                    };
+
+                    // Procesar resultados para cada métrica
+                    Object.keys(data).forEach(metricType => {
+                        data[metricType].forEach(metric => {
+                            const containerName = metric.metric.name;
+                            if (!metrics[metricType][containerName]) {
+                                metrics[metricType][containerName] = 0;
+                            }
+                            metrics[metricType][containerName] += parseFloat(metric.value[1]);
+                        });
+                    });
+
+                    // Crear la tabla
+                    createMetricsTable(dashboard, metrics);
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
-                    dashboard.querySelector('.cpu').innerText = 'Error cargando datos';
-                    dashboard.querySelector('.ram').innerText = 'Error cargando datos';
-                    dashboard.querySelector('.network').innerText = 'Error cargando datos';
-                    dashboard.querySelector('.disk').innerText = 'Error cargando datos';
+                    displayError(dashboard);
                 });
-                //console.log(dashboard)
-                console.log(`Fetching metrics for host: ${host}`)
         }
-        
 
-        function fetchAlerts(dashboard, host) {
-            fetch(`/prom/get_alerts?host=${host}`)
+        function createMetricsTable(dashboard, metrics) {
+            // Crear tabla
+            const table = document.createElement('table');
+            const header = table.createTHead();
+            const headerRow = header.insertRow(0);
+            const metricNames = ['Metric', ...Object.keys(metrics.cpu)];
+            
+            // Crear encabezados de columna
+            metricNames.forEach(text => {
+                const cell = document.createElement('th');
+                cell.innerText = text;
+                headerRow.appendChild(cell);
+            });
+
+            // Crear filas para cada métrica
+            const body = table.createTBody();
+            ['cpu', 'ram', 'network', 'disk'].forEach(metricType => {
+                const row = body.insertRow();
+                const metricCell = row.insertCell();
+                metricCell.innerText = metricType.toUpperCase();
+
+                Object.keys(metrics[metricType]).forEach(containerName => {
+                    const cell = row.insertCell();
+                    const value = metrics[metricType][containerName];
+                    cell.innerText = value !== undefined ? value.toFixed(3) + (metricType === 'cpu' || metricType === 'ram' ? '%' : (metricType === 'network' ? ' KB/s' : ' MB')) : 'No data';
+                });
+            });
+
+            // Agregar tabla al dashboard
+            dashboard.innerHTML = '';  // Limpiar contenido previo
+            dashboard.appendChild(table);
+        }
+
+        function fetchAlerts(dashboard, name) {
+            fetch(`/prom/get_container_alerts?name=${name}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -273,19 +318,20 @@
                 })
                 .then(data => {
                     dashboard.querySelector('.alerta').innerText = 'No hay alertas';
-                    //if (alerts) {
-                        dashboard.querySelector('.alerta').style.color="green";
+                  
+            
+                        dashboard.querySelector('.alerta').innerText = '';      
                         if (data.alerts && data.alerts.length > 0) {
                             data.alerts.forEach(alert => {
-                                if (alert.labels.job == host){
-                                    dashboard.querySelector('.alerta').innerText =`Job: ${alert.labels.job}, Severity: ${alert.labels.severity}, Instance: ${alert.labels.instance}`
-                                    if (alert.labels.severity === 'critical')
-                                        dashboard.querySelector('.alerta').style.color="red";
-                                }
+                                //dashboard.querySelector('.alerta').innerText =`Job: ${alert.labels.job}, Severity: ${alert.labels.severity}, Instance: ${alert.labels.instance}`
+                                dashboard.querySelector('.alerta').innerText +=`${alert.annotations.summary}, Severity: ${alert.labels.severity},\n`
+                                if (alert.labels.severity === 'critical')
+                                    dashboard.querySelector('.alerta').style.color="red";                            
                             });
                         } else {
                             dashboard.querySelector('.alerta').innerText = 'No hay alertas';
-                        }      // }
+                            dashboard.querySelector('.alerta').style.color="green";                     
+                        }     
                 })
                 .catch(error => {
                     console.error('Error fetching alerts:', error);
@@ -294,8 +340,8 @@
                 console.log(`Fetching alerts for host: ${host}`) 
         }
         
-        function fetchRules(dashboard, host){
-            fetch(`/prom/get_rules?host=${host}`)
+        function fetchRules(dashboard, name){
+            fetch(`/prom/get_container_rules?name=${name}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -306,41 +352,77 @@
                 .then(data => {
                     console.log(`Rules data for host ${host}:`, data);
                     console.log("Regla ", data.rules[0])
-                            if (data.rules && data.rules.length > 0) {
-                                data.rules.forEach(rule => {         
-                                    dashboard.querySelector('.regla').innerText =`Name: ${rule.name}\n File: ${rule.file}\n Interval: ${rule.interval}`
-                                });
-                            } else {
-                                dashboard.querySelector('.regla').innerText = 'No hay reglas';
+                    if (data.rules && data.rules.length > 0) {
+                        data.rules.forEach(group => {
+                            group.rules.forEach(rule => {
+
+                            // Crear un nuevo elemento para cada regla
+                            const ruleElement = document.createElement('div');
+                            ruleElement.classList.add('rule-item');
+
+                            // Construir el contenido de la regla
+                            let ruleText = `Name: ${rule.name}<br>State: ${rule.state}<br>Severity: ${rule.labels.severity}`;
+                            
+                            // Estilizar según la severidad de la alerta
+                            if (rule.state === 'firing') {
+                                ruleElement.style.color = 'red';
                             }
+
+                            // Asignar el contenido al elemento
+                            ruleElement.innerHTML = ruleText;
+
+                            // Añadir el elemento al contenedor
+                            dashboard.querySelector('.regla').appendChild(ruleElement);
+
+                            // Añadir <hr> entre reglas
+                            const hr = document.createElement('hr');
+                            dashboard.querySelector('.regla').appendChild(hr);
+                                
+                                
+                                
+                                /*ruletext= `* Name: ${rule.name}\n State: ${rule.state}\n Severity: ${rule.labels.severity}\n`
+                                dashboard.querySelector('.regla').innerText += ruletext;     //  
+                                if (rule.state === 'firing')
+                                    dashboard.querySelector('.regla').style.color="red";
+                                */
+                            
+                                // dashboard.querySelector('.regla').innerHTML += '<hr>';
+                                // Añadir el elemento al contenedor
+                                //reglaContainer.appendChild(ruleElement);
+                            });
+                        });
+                    } else {
+                        dashboard.querySelector('.regla').innerText = 'No hay reglas';
+                    }
                 
                 })
                 .catch(error => {
                     console.error('Error fetching rules:', error);
                     if(rules)  dashboard.querySelector('.rules .regla').innerText = 'Error cargando reglas';
                 });
-                console.log(`Fetching rules for host: ${host}`) 
+                console.log(`Fetching rules for container: ${name}`) 
         }
 
-       /* dashboards.forEach(dashboard => {
-            const host = dashboard.getAttribute('data-host');     
-            fetchMetrics(dashboard, host); // Realiza la primera solicitud inmediatamente
-            setInterval(() => fetchMetrics(dashboard, host), 60000); // Actualiza cada minuto               
+        dashboards.forEach(dashboard => {
+            const name = dashboard.getAttribute('data-container');     
+            fetchMetrics(dashboard, name); // Realiza la primera solicitud inmediatamente
+            setInterval(() => fetchMetrics(dashboard, name), 60000); // Actualiza cada minuto               
         });
 
         alerts.forEach(dashboard => {
-            const host = dashboard.getAttribute('data-host');           
-            fetchAlerts(dashboard, host); // Realiza la primera solicitud inmediatamente     
-            setInterval(() => fetchAlerts(dashboard, host), 60000); // Actualiza cada minuto
+            const name = dashboard.getAttribute('data-container');           
+            fetchAlerts(dashboard, name); // Realiza la primera solicitud inmediatamente     
+            setInterval(() => fetchAlerts(dashboard, name), 60000); // Actualiza cada minuto
         });           
 
         rules.forEach(dashboard => {
-            const host = dashboard.getAttribute('data-host');         
-            fetchRules(dashboard, host); // Realiza la primera solicitud inmediatamente         
-            setInterval(() => fetchRules(dashboard, host), 60000); // Actualiza cada minuto
+            const name = dashboard.getAttribute('data-container');         
+            fetchRules(dashboard, name); // Realiza la primera solicitud inmediatamente         
+            setInterval(() => fetchRules(dashboard, name), 60000); // Actualiza cada minuto
     
-        });*/
+        });
     })
+   
 </script>
 
 
